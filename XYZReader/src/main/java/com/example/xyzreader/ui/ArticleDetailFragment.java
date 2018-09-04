@@ -6,10 +6,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,19 +13,18 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.SubtitleCollapsingToolbarLayout;
 import android.support.v4.app.ShareCompat;
-import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -55,10 +50,12 @@ public class ArticleDetailFragment extends Fragment implements
     private long mItemId;
     private View mRootView;
 
-    protected  @BindView(R.id.photo) ImageView mPhotoView;
-    protected @BindView(R.id.share_fab) ImageButton mShareFab;
+    protected @BindView(R.id.photo) ImageView mPhotoView;
+    protected @BindView(R.id.share_fab) FloatingActionButton mShareFab;
     protected @BindView(R.id.article_body) TextView bodyView;
     protected @BindView(R.id.subtitle_collapsing_toolbar_layout) SubtitleCollapsingToolbarLayout mSubTitleCollapLayout;
+    protected @BindView(R.id.scrollView) ScrollView mScrollView;
+    protected @BindView(R.id.app_bar_layout) AppBarLayout mAppbarLayout;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -90,6 +87,17 @@ public class ArticleDetailFragment extends Fragment implements
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -109,9 +117,10 @@ public class ArticleDetailFragment extends Fragment implements
         mShareFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String body = mCursor.getString(ArticleLoader.Query.BODY).substring(0,200) + "...";
                 startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
                         .setType("text/plain")
-                        .setText("Some sample text")
+                        .setText(body)
                         .getIntent(), getString(R.string.action_share)));
             }
         });
