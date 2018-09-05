@@ -17,14 +17,19 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.SubtitleCollapsingToolbarLayout;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.format.DateUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -54,8 +59,9 @@ public class ArticleDetailFragment extends Fragment implements
     protected @BindView(R.id.share_fab) FloatingActionButton mShareFab;
     protected @BindView(R.id.article_body) TextView bodyView;
     protected @BindView(R.id.subtitle_collapsing_toolbar_layout) SubtitleCollapsingToolbarLayout mSubTitleCollapLayout;
-    protected @BindView(R.id.scrollView) ScrollView mScrollView;
+    protected @BindView(R.id.scrollView) NestedScrollView mScrollView;
     protected @BindView(R.id.app_bar_layout) AppBarLayout mAppbarLayout;
+    protected @BindView(R.id.toolbar) Toolbar mAppToolbar;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -113,7 +119,6 @@ public class ArticleDetailFragment extends Fragment implements
             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
         ButterKnife.bind(this,mRootView);
-
         mShareFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +130,6 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
-        bindViews();
         return mRootView;
     }
 
@@ -172,6 +176,12 @@ public class ArticleDetailFragment extends Fragment implements
             }
             mSubTitleCollapLayout.setTitle(title);
             mSubTitleCollapLayout.setSubtitle(subTitle);
+            mAppToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((AppCompatActivity) getActivity()).onSupportNavigateUp();
+                }
+            });
 
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()

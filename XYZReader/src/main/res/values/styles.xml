@@ -26,11 +26,13 @@
     </style>-->
 
     <style name="myTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimary">@color/theme_primary</item>
-        <item name="android:colorPrimaryDark">@color/theme_primary_dark</item>
-        <item name="android:colorAccent">@color/theme_accent</item>
+        <item name="colorPrimary">@color/theme_primary</item>
+        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="colorAccent">@color/theme_accent</item>
+        <item name="android:windowExitTransition">@transition/exit_transition</item>
     </style>
     <style name="myAppBarTheme" parent="myTheme">
+        <item name="android:background">@color/light_teal</item>
         <item name="android:textColor">@color/text_light</item>
         <item name="android:subtitleTextColor">@color/text_light</item>
     </style>

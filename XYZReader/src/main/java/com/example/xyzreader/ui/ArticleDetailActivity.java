@@ -31,7 +31,7 @@ public class ArticleDetailActivity extends AppCompatActivity
     private Cursor mCursor;
     private long mStartId;
 
-    private long mSelectedItemId;
+    //private long mSelectedItemId;
     protected @BindView(R.id.pager) ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
 
@@ -46,6 +46,14 @@ public class ArticleDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_article_detail);
         ButterKnife.bind(this);
         getLoaderManager().initLoader(0, null, this);
+
+        // Transition
+        /*Slide slide = new Slide(Gravity.BOTTOM);
+        slide.addTarget(R.id.article_body);
+        slide.setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.linear_out_slow_in));
+        slide.setDuration(1000);
+        getWindow().setEnterTransition(slide);*/
+        //End Transition
 
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager.setAdapter(mPagerAdapter);
@@ -64,13 +72,13 @@ public class ArticleDetailActivity extends AppCompatActivity
                 if (mCursor != null) {
                     mCursor.moveToPosition(position);
                 }
-                mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
+                //mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
             }
         });
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getData() != null) {
                 mStartId = ItemsContract.Items.getItemId(getIntent().getData());
-                mSelectedItemId = mStartId;
+                //mSelectedItemId = mStartId;
             }
         }
     }
